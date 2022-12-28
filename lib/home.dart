@@ -12,11 +12,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   // textfield
   TextEditingController t1 = TextEditingController();
-  int diceVlaue = 0;
 
   // image object declaration
 
-  List l1 = [
+  List diceImg = [
     "assets/images/1.png",
     "assets/images/2.png",
     "assets/images/3.png",
@@ -25,263 +24,218 @@ class _HomeState extends State<Home> {
     "assets/images/6.png",
   ];
 
-  int i = 0;
+  // list for image
+
+  List diceValue = [];
+
+  // list for random value for dice
+  List rndDiceValue = [];
+
+  // color hide
+
+  Color c1 = Color(0xffF5EDED);
+  Color c2 = Color(0xffF5EDED);
+  Color c3 = Colors.black;
+  Color c4 = Colors.black38;
+
+  // random value
+  int rndValue = 0;
+
+  // sum
+  int sum = 0;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        // appbar
         appBar: AppBar(
-          backgroundColor: Color(0xffF5EDDC),
-          leading:
-              Icon(Icons.all_inclusive, size: 30, color: Color(0xffEB1D36)),
-          title: Text(
-            "Dice App",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 5,
-              color: Color(0xffEB1D36),
-              fontSize: 24,
-            ),
+          leading: Icon(
+            Icons.all_inclusive,
+            size: 30,
+            color: Color(0xffF5EDED),
           ),
+          title: Text("Dice App",
+              style: TextStyle(
+                letterSpacing: 2,
+                fontSize: 24,
+                color: Color(0xffF5EDED),
+              )),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Icon(
+                color: Color(0xffF5EDED),
+                Icons.refresh,
+                size: 28,
+              ),
+            )
+          ],
+          backgroundColor: Color(0xff000000),
         ),
 
-        // body part ui
+        // body
 
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // row for dice value
+            // text field
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: TextField(
+                controller: t1,
+                style: TextStyle(color: Colors.black, letterSpacing: 2),
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                    label: Text("Enter Total Dice Value..",
+                        style:
+                            TextStyle(letterSpacing: 2, color: Colors.black)),
+                    //labelText: "Enter Total Dice Value ..",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(
+                          width: 3,
+                          color: Color(0xff000000),
+                        ))),
+              ),
+            ),
+
+            // generate dice
 
             Padding(
-              padding: EdgeInsets.all(10),
-              child: Center(
+              padding: const EdgeInsets.all(20),
+              child: InkWell(
+                onTap: () {
+                  var tx = t1.text;
+                  int n = int.parse(tx);
+                  diceValue.clear();
+                  setState(() {
+                    for (int j = 0; j < n; j++) {
+                      diceValue.add(0);
+                      rndDiceValue.add(0);
+                    }
+                  });
+                  //unhide play button
+                  c1 = c4;
+                  c2 = c3;
+                },
                 child: Container(
                   alignment: Alignment.center,
-                  height: 75,
-                  width: 480,
+                  height: 40,
+                  width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color(0xffF5EDDC),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "How many Dice you want ?",
-                          style: TextStyle(
-                            fontSize: 18,
-                            letterSpacing: 3,
-                            color: Color(0xffEB1D36),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 65,
-                          width: 60,
-                          child: TextField(
-                            controller: t1,
-                            maxLength: 1,
-                            showCursor: false,
-                            cursorColor: Color(0xffEB1D36),
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                hintText: "0",
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color(0xffEB1D36),
-                                        style: BorderStyle.solid,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(15)),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xffEB1D36)),
-                                  borderRadius: BorderRadius.circular(15),
-                                )),
-                            style: TextStyle(
-                                color: Color(0xffEB1D36),
-                                letterSpacing: 2,
-                                fontSize: 25),
-                          ),
-                        ),
-                      ),
-                      Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 5),
-                              child: InkWell(
-                                onTap: () {
-
-                                  String valueFromText = t1.text;
-                                  diceVlaue = int.parse(valueFromText);
-
-                                  setState(() {
-
-                                 // print("$diceVlaue");
-
-                                  });
-
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(0xffFA9494),
-                                  ),
-                                  child: Icon(Icons.casino, size: 30),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: Text("click",
-                                style: TextStyle(letterSpacing: 2)),
-                          ),
-                        ],
-                      ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black38, spreadRadius: 2, blurRadius: 2)
                     ],
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    "Generate",
+                    style: TextStyle(
+                      fontSize: 17,
+                      letterSpacing: 2,
+                      color: Color(0xffF5EDED),
+                    ),
                   ),
                 ),
               ),
             ),
 
-            // row for show dice
+            // dice generation loop
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: diceValue
+                    .asMap()
+                    .entries
+                    .map((e) => Image.asset(
+                          diceImg[
+                              rndDiceValue.isEmpty ? 0 : rndDiceValue[e.key]],
+                          height: 100,
+                          width: 100,
+                        ))
+                    .toList(),
+              ),
+            ),
 
-            Column(
-              children: [
-                // row 1 , max 3 dice
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+            // play button
 
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: InkWell(
+                onTap: () {
+                  var tx = t1.text;
+                  int n = int.parse(tx);
+                  var rnd = Random();
 
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
+                  rndDiceValue.clear();
+                  sum = 0;
+                  print("\n");
 
+                  setState(() {
+                    for (int j = 0; j < n; j++) {
+                      rndValue = rnd.nextInt(6);
+                      rndDiceValue.add(rndValue);
+                      int s1 = rndDiceValue[j];
+                      sum = sum + s1 + 1;
+                    }
+                    print("$sum");
+                    print(rndDiceValue);
+                  });
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 40,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(color: c1, spreadRadius: 2, blurRadius: 3)
                     ],
+                    color: c2, //Colors.black,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    "Play",
+                    style: TextStyle(
+                      fontSize: 17,
+                      letterSpacing: 2,
+                      color: Color(0xffF5EDED),
+                    ),
                   ),
                 ),
+              ),
+            ),
 
-                // row 2 , max 3 dice
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Center(
+                child: Text("Sum is",
+                    style: TextStyle(fontSize: 20, letterSpacing: 2)),
+              ),
+            ),
 
-
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: InkWell(
-                          onTap: () {
-                            var rnd = Random();
-                            setState(() {
-                              i = rnd.nextInt(5);
-                            });
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            child: Image.asset(l1[i]),
-                          ),
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ),
-
-              ],
+            Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              child: Text("$sum",
+                  style: TextStyle(fontSize: 20, letterSpacing: 2)),
             ),
           ],
         ),
-        backgroundColor: Color(0xffCFD2CF),
+
+        // background colur
+        backgroundColor: Color(0xffF5EDED),
       ),
     );
   }
